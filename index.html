@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+    <title>Access Mongo</title>
+</head>
+<body onload="displayCommentsOnLoad()">
+    <h1>Comments:</h1>
+    <div id="comments"></div>
+<script>
+    const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
+    const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('log_entries');
+
+    newTimestamp = Date.now();
+    db.collection('test').updateOne({timestamp: 1592405267025}, {$set:{comment:'this is totally rad!'}}, {upsert:true});
+    displayComments();
+
+
+    function displayComments() {
+        db.collection('test')
+        .find({}, {limit: 1000})
+        .toArray()
+        .then(docs => {
+            document.getElementById("comments").innerHTML = docs.map(doc => `<div>${doc.comment}</div>`).join(' ');
+        });
+    }
+
+    function displayCommentsOnLoad() {
+        client.auth
+        .loginWithCredential(new stitch.AnonymousCredential())
+        .then(displayComments)
+        .catch(console.error);
+    }
+</script>
+</body>
+</html>
