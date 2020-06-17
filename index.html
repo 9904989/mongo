@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="mongo.css">
     <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
     <title>Access Mongo</title>
 </head>
 <body onload="displayCommentsOnLoad()">
     <h1>Comments:</h1>
     <div id="comments"></div>
+    <div class="content" id="log_entries">
+        <div class="log_entry" onclick="edit_log_entry(this);">
+            <div class="time">0030</div>
+            <div class="icon"><img src="nappy_dirty.png"></div>
+            <div class="comment">4.5hrs since last change</div>
+            <div class="timestamp">1592405267025</div>
+        </div>
+    </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
     const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('log_entries');
 
-    newTimestamp = Date.now();
-    db.collection('test').updateOne({timestamp: 1592405267025}, {$set:{comment:'this is totally rad!'}}, {upsert:true});
-    displayComments();
-
+    //newTimestamp = Date.now();
+    //db.collection('test').updateOne({timestamp: 1592405267025}, {$set:{comment:'this is totally rad!'}}, {upsert:true});
+    //displayComments();
 
     function displayComments() {
         db.collection('test')
@@ -34,6 +41,12 @@
         .then(displayComments)
         .catch(console.error);
     }
+
+    function edit_log_entry(e) {
+            e = e || window.event;
+            var src = e.target || e.srcElement;
+            alert(e.innerText);
+        }
 </script>
 </body>
 </html>
