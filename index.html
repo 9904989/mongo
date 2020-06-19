@@ -7,33 +7,32 @@
     <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
     <title>Access Mongo</title>
 </head>
-<body onload="display_log_entries_on_load()">
+<body onload="display_log_entries_on_load();">
     <h1>Evie's Logs:</h1>
     <div class="content" id="log_entries"></div>
     <div class="edit">
         <form>
             <div>
                 <label for="time_entry">Time:</label>
-                <input class="form_fields" type="time" id="edit_time" name="time_entry" value="now();">
+                <input class="form_fields" type="time" id="edit_time" name="time_entry" value="15:37">
             </div>
             <div>
                 <label for="edit_date">Date:</label>
-                <input class="form_fields" type="date" id="edit_date" name="date_entry">
+                <input class="form_fields" type="date" id="edit_date" name="date_entry" value="2020-06-20">
             </div>
             <div>
                 <label for="edit_volume">Volume:</label>
                 <input class="form_fields" inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" size ="3" maxlength="3">
             </div>
-            <div>
+            <!--<div>
                 <input type ="button" id="delete_button" value="delete entry">
-                <input type ="button" id="close_button" value="close">
-            </div>
+                <input type ="button" id="close_button" value="ok">
+            </div>-->
         </form>
     </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
     const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('log_entries');
-
     //Create Log Entry
     //newTimestamp = Date.now();
 
@@ -70,6 +69,8 @@
 
     //Update log entry
     function edit_log_entry(e) {
+        var d = new Date();
+        alert(d.getHours()+':'+d.getMinutes());
         e = e || window.event;
         var src = e.target || e.srcElement;
         alert(e.innerText);
@@ -86,7 +87,12 @@
     //Delete log entry
     function delete_log_entry() {
 
-    }    
+    }
+    
+    function time_now() {
+        var d = new Date();
+        return d.getHours()+':'+d.getMinutes();
+    }
 </script>
 </body>
 </html>
