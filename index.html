@@ -10,13 +10,25 @@
 <body onload="display_log_entries_on_load()">
     <h1>Evie's Logs:</h1>
     <div class="content" id="log_entries"></div>
-    <div class="edit" onclick="edit_log_Toggle();" display="none">
-        <label for="time_entry">Time:</label><br>
-        <input type="time" id="edit_time" name="time_entry"><br>
-        <label for="edit_date">Date:</label><br>
-        <input type="date" id="edit_date" name="date_entry"><br>
-        <label for="edit_volume">Volume:</label><br>
-        <input inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" maxlength="3">
+    <div class="edit">
+        <form>
+            <div>
+                <label for="time_entry">Time:</label>
+                <input class="form_fields" type="time" id="edit_time" name="time_entry" value="now();">
+            </div>
+            <div>
+                <label for="edit_date">Date:</label>
+                <input class="form_fields" type="date" id="edit_date" name="date_entry">
+            </div>
+            <div>
+                <label for="edit_volume">Volume:</label>
+                <input class="form_fields" inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" size ="3" maxlength="3">
+            </div>
+            <div>
+                <input type ="button" id="delete_button" value="delete entry">
+                <input type ="button" id="close_button" value="close">
+            </div>
+        </form>
     </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
