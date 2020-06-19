@@ -7,45 +7,74 @@
     <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
     <title>Access Mongo</title>
 </head>
-<body onload="displayCommentsOnLoad()">
-    <h1>Log Entries:</h1>
-    <div class="content" id="log_entries">
+<body onload="display_log_entries_on_load()">
+    <h1>Evie's Logs:</h1>
+    <div class="content" id="log_entries"></div>
+    <div class="edit" onclick="edit_log_Toggle();" display="none">
+        <label for="time_entry">Time:</label><br>
+        <input type="time" id="edit_time" name="time_entry"><br>
+        <label for="edit_date">Date:</label><br>
+        <input type="date" id="edit_date" name="date_entry"><br>
+        <label for="edit_volume">Volume:</label><br>
+        <input inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" maxlength="3">
     </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
     const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('log_entries');
 
+    //Create Log Entry
     //newTimestamp = Date.now();
-    //db.collection('test').updateOne({timestamp: 1592405267025}, {$set:{comment:'this is totally rad!'}}, {upsert:true});
-    //displayComments();
 
-    function displayComments() {
+    //Read log entries
+    function generate_log_entries() {
         db.collection('test')
         .find({}, {limit: 1000})
         .toArray()
         .then(docs => {
             const html = "";
-            document.getElementById("log_entries").innerHTML = docs.map(doc => 
+            document.getElementById("log_entries").innerHTML = docs.map(doc =>
+            (doc.icon == "bottle") ? 
+            '<div class="log_entry" onclick="edit_log_entry(this);">'
+            +`<div class="time">${doc.time}</div>`
+            +`<div class="volume">${doc.volume}</div>`
+            +`<div class="comment">${doc.comment}</div>`
+            +`<div class="timestamp">${doc.timestamp}</div></div>`
+            :
             '<div class="log_entry" onclick="edit_log_entry(this);">'
             +`<div class="time">${doc.time}</div>`
             +`<div class="icon"><img src=${doc.icon}></div>`
             +`<div class="comment">${doc.comment}</div>`
-            +`<div class="timestamp">${doc.timestamp}</div></div>`).join(' ');
+            +`<div class="timestamp">${doc.timestamp}</div></div>`
+            ).join(' ');
         });
     }
 
-    function displayCommentsOnLoad() {
+    function display_log_entries_on_load() {
         client.auth
         .loginWithCredential(new stitch.AnonymousCredential())
-        .then(displayComments)
+        .then(generate_log_entries)
         .catch(console.error);
     }
 
+    //Update log entry
     function edit_log_entry(e) {
-            e = e || window.event;
-            var src = e.target || e.srcElement;
-            alert(e.innerText);
-        }
+        e = e || window.event;
+        var src = e.target || e.srcElement;
+        alert(e.innerText);
+        //db.collection('test').updateOne({timestamp: 1592405267025}, {$set:{comment:'this is totally rad!'}}, {upsert:true});
+    }
+
+    function edit_log_Toggle() {
+            //var blur = document.getElementById('blur');
+            //blur.classList.toggle('blur');
+            var edit_log = document.querySelector('.edit_log');
+            edit_log.classList.toggle('active');
+    }
+
+    //Delete log entry
+    function delete_log_entry() {
+
+    }    
 </script>
 </body>
 </html>
