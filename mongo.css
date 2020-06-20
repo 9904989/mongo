@@ -57,9 +57,9 @@ a {
 }
 
 #popup {
-    position: fixed;
-    top: 40%;
-    left: 20%;
+    /*position: fixed;
+    bottom: 15px;
+    left: 25px;
     transform: translate(-50%, -50%);
     width: 40%;
     max-width: 180px;
@@ -69,12 +69,24 @@ a {
     background: #fff;
     visibility: hidden;
     opacity: 0;
-    transition: 0.5s;
+    transition: 0.5s;*/
+    position: absolute;
+    /*bottom: 50px;*/
+    top: 35%;
+    left: 100px;
+    background: #fff;
+    min-width: 175px;
+    padding: 20px;
+    border-radius: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 #popup.active {
-    top: 50%;
+    top: 30%;
     visibility: visible;
     opacity: 1;
-    transition: 0.5s;
+    transition: 0.3s;
 }
