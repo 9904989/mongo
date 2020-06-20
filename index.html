@@ -10,7 +10,7 @@
 <body onload="display_log_entries_on_load();">
     <h1>Evie's Logs:</h1>
     <div class="content" id="log_entries"></div>
-    <div class="edit">
+    <div id="popup">
         <form>
             <div>
                 <label for="time_entry">Time:</label>
@@ -22,13 +22,10 @@
             </div>
             <div>
                 <label for="edit_volume">Volume:</label>
-                <input class="form_fields" inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" size ="3" maxlength="3">
+                <input class="form_fields" inputmode="numeric" pattern="[0-9]*" type="text" id="edit_volume" name="volume_entry" value="" size ="3" maxlength="3"> ml
             </div>
-            <!--<div>
-                <input type ="button" id="delete_button" value="delete entry">
-                <input type ="button" id="close_button" value="ok">
-            </div>-->
         </form>
+        <a href="#" onclick="toggle()">Close</a>
     </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
@@ -45,13 +42,15 @@
             const html = "";
             document.getElementById("log_entries").innerHTML = docs.map(doc =>
             (doc.icon == "bottle") ? 
-            '<div class="log_entry" onclick="edit_log_entry(this);">'
+            //'<div class="log_entry" onclick="edit_log_entry(this);">'
+            '<div class="log_entry" onclick="toggle();">'
             +`<div class="time">${doc.time}</div>`
             +`<div class="volume">${doc.volume}</div>`
             +`<div class="comment">${doc.comment}</div>`
             +`<div class="timestamp">${doc.timestamp}</div></div>`
             :
-            '<div class="log_entry" onclick="edit_log_entry(this);">'
+            //'<div class="log_entry" onclick="edit_log_entry(this);">'
+            '<div class="log_entry" onclick="toggle();">'
             +`<div class="time">${doc.time}</div>`
             +`<div class="icon"><img src=${doc.icon}></div>`
             +`<div class="comment">${doc.comment}</div>`
@@ -69,8 +68,6 @@
 
     //Update log entry
     function edit_log_entry(e) {
-        var d = new Date();
-        alert(d.getHours()+':'+d.getMinutes());
         e = e || window.event;
         var src = e.target || e.srcElement;
         alert(e.innerText);
@@ -89,10 +86,24 @@
 
     }
     
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
     function time_now() {
         var d = new Date();
-        return d.getHours()+':'+d.getMinutes();
+        return addZero(d.getHours())+':'+addZero(d.getMinutes());
     }
+
+    function toggle() {
+            //var blur = document.getElementById('blur');
+            //blur.classList.toggle('active');
+            var popup = document.getElementById('popup');
+            popup.classList.toggle('active');
+        }
 </script>
 </body>
 </html>
