@@ -38,7 +38,7 @@ h1 {
 }
 
 .form {
-    font-size: xx-large;
+    font-size: 16px;
 }
 .form_fields {
     border: none;
@@ -81,7 +81,7 @@ a {
     opacity: 0;
     visibility: hidden;
     transition: 0.3s;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
 #popup.active {

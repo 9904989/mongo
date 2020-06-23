@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="mongo.css">
+    <link rel="stylesheet" href="call_to_action_button.css">
     <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
     <title>Access Mongo</title>
 </head>
@@ -27,11 +28,67 @@
         </form>
         <a href="#" onclick="toggle()">Close</a>
     </div>
+    <div class="action" onclick="actionToggle();">
+        <span>+</span>
+        <ul>
+            <li>Bottle</li>
+            <li onclick="addEntry('nappy_dirty.png');">Poopy</li>
+            <li onclick="addEntry('nappy_wet.png');">Wet</li>
+            <li>Comment</li>
+        </ul>
+    </div>
 <script>
     const client = stitch.Stitch.initializeDefaultAppClient('evie_tracker-qprfn');
     const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('log_entries');
-    //Create Log Entry
-    //newTimestamp = Date.now();
+    
+    //Create new Log Entry
+    function addEntry(icon_value) {
+        var d = new Date();
+        var time_value = addZero(d.getHours()) + ":" + addZero(d.getMinutes());
+        var comment_value = '4hrs since last change';
+        var timestamp_value = d.now();
+
+        //insert new log entry into mongo { owner_id : client.auth.user.id }
+        //db.collection('test').insertOne({time: time_value, icon: icon_value, comment: comment_value, timestamp: timestamp_value });
+
+        new_entry = document.createElement("div");
+        new_entry.classList.add("log_entry");
+        new_entry.setAttribute("onclick","edit_log_entry(this);");
+
+        new_entry_time = document.createElement("div");
+        new_entry_time.classList.add("time");
+        new_entry_time.innerText = time_value;
+        new_entry.appendChild(new_entry_time);
+
+        new_entry_icon = document.createElement("div");
+        new_entry_icon.classList.add("icon");
+        new_icon = document.createElement("img");
+        new_icon.src = icon;
+        new_entry_icon.appendChild(new_icon);
+        new_entry.appendChild(new_entry_icon);
+
+        new_entry_comment = document.createElement("div");
+        new_entry_comment.classList.add("comment");
+        //calculate time since last change
+        new_entry_comment.innerText = comment_value;
+        new_entry.appendChild(new_entry_comment);
+
+        new_entry_timestamp = document.createElement("div");
+        new_entry_timestamp.classList.add("timestamp");
+        new_entry_timestamp.innerText = timestamp_value;
+        new_entry.appendChild(new_entry_timestamp);
+        
+        //add new entry to start of content <div>
+        var log_entries = document.getElementById("log_entries");
+        log_entries.insertBefore(new_entry, log_entries.childNodes[0]);
+    }
+
+    function actionToggle() {
+            var blur = document.getElementById('blur');
+            blur.classList.toggle('blur');
+            var action = document.querySelector('.action');
+            action.classList.toggle('active');
+        }
 
     //Read log entries
     function generate_log_entries() {
