@@ -38,9 +38,10 @@ h1 {
 }
 
 .form {
-    font-size: 16px;
+    font-size: xx-large;
 }
 .form_fields {
+    font-size: 16px;
     border: none;
     margin-left: 2px;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
